@@ -37,7 +37,7 @@ For more complex requests that cannot be handled entirely through the web interf
 This method improves the client’s in-branch experience by minimizing delays and maximizing efficiency during face-to-face interactions.
 
 ## Workflow Of "SmartQueue" Project
-![SmartQueue Workflow](FlowChart_updated.png)
+![SmartQueue Workflow](SmartQueue.png)
 
 ## Tech Stacks for "SmartQueue"
 - Backend: D
