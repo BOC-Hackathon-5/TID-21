@@ -1,0 +1,1219 @@
+{
+	"info": {
+		"_postman_id": "2f42aaa0-605b-4db3-8f21-8492b19c050e",
+		"name": "PSD2-PROD-SAMPLES SB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1101655"
+	},
+	"item": [
+		{
+			"name": "Oauth - Client Credential",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"OAuth - 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"oauthCode\", jsonData.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain",
+						"name": "Content-Type",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "TPPOAuth2Security",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/oauth2/token",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Oauth - Introspect",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "{{oauthCode}}",
+							"type": "text"
+						},
+						{
+							"key": "token_type_hint",
+							"value": "access_token",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/oauth2/introspect",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"oauth2",
+						"introspect"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateSubscription",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"OAuth - 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"subscriptionId\", jsonData.subscriptionId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "originUserId",
+						"value": "{{originUserId}}",
+						"disabled": true
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \"accounts\": {\n    \"transactionHistory\": true,\n    \"balance\": true,\n    \"details\": true,\n    \"checkFundsAvailability\": true\n  },\n  \"payments\": {\n    \"limit\": 99999999,\n    \"currency\": \"EUR\",\n    \"amount\": 999999999\n  }\n}"
+				},
+				"url": {
+					"raw": "{{url}}/v1/subscriptions",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"subscriptions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Oauth - Authorisation Code",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"OAuth - 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"oauthCode2\", jsonData.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "{{client_id}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{client_secret}}",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "UserOAuth2Security",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "AAKzF1GUvSLyDjvyLKEJQxGzTReHzkQdLtyesBV_MctmfLo-bLBl6t5BYqUT7bipX79qjk7qDMeM1HIqTsH9PcThllJlueD8kX2iC9saS4F_Qg",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/oauth2/token",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetrieveSubscription",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "timestamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/subscriptions/{{subscriptionId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"subscriptions",
+						"{{subscriptionId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateSubscription",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode2}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\n        \"subscriptionId\": \"Subid000001-1726237030663\",\n        \"status\": \"INPROGRESS\",\n        \"description\": \"SUBSCRIPTION\",\n        \"selectedAccounts\": [\n            {\n                \"accountId\": \"351092345676\"\n            },\n            {\n                \"accountId\": \"351012345673\"\n            },\n            {\n                \"accountId\": \"351012345671\"\n            },\n            {\n                \"accountId\": \"351012345674\"\n            },\n            {\n                \"accountId\": \"351012345675\"\n            },\n            {\n                \"accountId\": \"351092345672\"\n            }\n        ],\n        \"accounts\": {\n            \"transactionHistory\": true,\n            \"balance\": true,\n            \"details\": true,\n            \"checkFundsAvailability\": true\n        },\n        \"payments\": {\n            \"limit\": 99999999,\n            \"currency\": \"EUR\",\n            \"amount\": 999999999\n        },\n        \"expirationDate\": \"12/12/2024\"\n    }"
+				},
+				"url": {
+					"raw": "{{url}}/v1/subscriptions/{{subscriptionId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"subscriptions",
+						"{{subscriptionId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteSubscription",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/v1/subscriptions/{{subscriptionId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"subscriptions",
+						"{{subscriptionId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAccounts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/accounts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAvlBalance",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/accounts/{{accNumber}}/balance",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						"{{accNumber}}",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAvlBalance All",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/accounts/ /balance",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						" ",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AccountDetails",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/accounts/{{accNumber}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						"{{accNumber}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAcc Statement",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/accounts/{{accNumber}}/statement?startDate=22/08/2019&endDate=22/08/2019&maxCount=0",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"accounts",
+						"{{accNumber}}",
+						"statement"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "22/08/2019"
+						},
+						{
+							"key": "endDate",
+							"value": "22/08/2019"
+						},
+						{
+							"key": "maxCount",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SignRequest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "tppId",
+						"value": "singpaymentdata"
+					},
+					{
+						"key": "env",
+						"value": "Sandbox",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n              \"debtor\": {\n                             \"bankId\": \"\",\n                             \"accountId\": \"351012345671\"\n              },\n              \"creditor\": {\n                             \"bankId\": \"CITIUS33\",\n                             \"accountId\": \"48193222324233\"\n              },\n              \"transactionAmount\": {\n                             \"amount\": 30,\n                             \"currency\": \"EUR\"\n              },\n              \"paymentDetails\": \"SWIFT Transfer\"\n}"
+				},
+				"url": {
+					"raw": "https://sandbox-apis.bankofcyprus.com/df-boc-org-sb/sb/jwssignverifyapi/sign",
+					"protocol": "https",
+					"host": [
+						"sandbox-apis",
+						"bankofcyprus",
+						"com"
+					],
+					"path": [
+						"df-boc-org-sb",
+						"sb",
+						"jwssignverifyapi",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SignRequest-MassPayment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"name": "Content-Type",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"filename\": \"Mass1\",\n  \"numberOfTransactions\": 1,\n  \"massPayments\": [\n    {\n      \"debtor\": {\n        \"bankId\": \"BCYPCY2N\",\n        \"accountId\": \"351012345671\"\n      },\n      \"massPaymentCreditor\": {\n        \"bankId\": \"BCYPCY2N\",\n        \"accountId\": \"014812005414\"\n      },\n      \"chargesPaidBy\": \"DEBTOR\",\n      \"chargesAccount\": {\n        \"bankId\": \"BCYPCY2N\",\n        \"accountId\": \"035711003051\"\n      },\n      \"amount\": {\n        \"amount\": 10,\n        \"currency\": \"EUR\"\n      },\n      \"description\": {\n        \"line1\": \"1\",\n        \"line2\": \"2\",\n        \"line3\": \"3\",\n        \"line4\": \"4\"\n      },\n      \"endToEndId\": \"160\",\n      \"executionDate\": \"22/02/2018\",\n      \"valueDate\": \"22/02/2018\"\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://sandbox-apis.bankofcyprus.com/df-boc-org-sb/sb/jwssignverifyapi/sign",
+					"protocol": "https",
+					"host": [
+						"sandbox-apis",
+						"bankofcyprus",
+						"com"
+					],
+					"path": [
+						"df-boc-org-sb",
+						"sb",
+						"jwssignverifyapi",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SignRequest-GroupPayments",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "tppId",
+						"value": "{{tppId}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n\t\"filename\":\"salary1\", \n\t\"numberOfTransactions\":2,\n\t\"totalAmount\":\"10\", \n\t\"type\":\"PAYROLL\", \n\t\"executionDate\":\"20/09/2020\", \n\t\"debtor\":{ \"bankId\":\"BCYPCY2N\", \"accountId\":\"351092345672\" }, \n\t\"companyInfo\":{ \"identification\":\"CYP123\", \"name\":\"Test Lts\" }, \n\t\"groupPayments\":[ \n\t\t{ \"groupPaymentCreditor\":{ \n\t\t\t\t\"bankId\":\"HEBACY2N\", \"accountId\":\"CY020005351092345675\", \"beneficiaryName\":\"John Deer\", \"beneficiaryAddress\":{ \"line1\":\"12\", \"line2\":\"Makariou\", \"line3\":\"Nicosia\", \"line4\":\"Cyprus\" } \n\t\t\t}, \n\t\t   \"amount\":4, \n\t\t   \"description\":{ \"line1\":\"Payroll\", \"line2\":\"February\", \"line3\":\"2019\", \"line4\":\"Test\" }, \n\t\t   \"endToEndId\":\"AB124356\"\n\t\t} ,\n\t\t{ \"groupPaymentCreditor\":{ \n\t\t\t\t\"bankId\":\"CRBAGRAA\", \"accountId\":\"GR020005654092345123\", \"beneficiaryName\":\"Kate Brown\", \"beneficiaryAddress\":{ \"line1\":\"3\", \"line2\":\"Ermou\", \"line3\":\"Athens\", \"line4\":\"Greece\" } \n\t\t\t}, \n\t\t   \"amount\":6, \n\t\t   \"description\":{ \"line1\":\"Payroll\", \"line2\":\"February\", \"line3\":\"2019\", \"line4\":\"Test\" }, \n\t\t   \"endToEndId\":\"AB124357\"\n\t\t}\n\t] \n}\n "
+				},
+				"url": {
+					"raw": "https://sandbox-apis.bankofcyprus.com/df-boc-org-sb/sb/jwssignverifyapi/sign",
+					"protocol": "https",
+					"host": [
+						"sandbox-apis",
+						"bankofcyprus",
+						"com"
+					],
+					"path": [
+						"df-boc-org-sb",
+						"sb",
+						"jwssignverifyapi",
+						"sign"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateMassPayments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"AUTH - 201\", function () {",
+							"pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"name": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "originUserId",
+						"value": "{{originUserId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "lang",
+						"value": "{{lang}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\": \"eyAiZmlsZW5hbWUiOiJNYXNzMSIsICJudW1iZXJPZlRyYW5zYWN0aW9ucyI6MSwgIm1hc3NQYXltZW50cyI6WyB7ICJkZWJ0b3IiOnsgImJhbmtJZCI6IkJDWVBDWTJOIiwgImFjY291bnRJZCI6IjM1MTAxMjM0NTY3MSIgfSwgIm1hc3NQYXltZW50Q3JlZGl0b3IiOnsgImJhbmtJZCI6IkJDWVBDWTJOIiwgImFjY291bnRJZCI6IjAxNDgxMjAwNTQxNCIgfSwgImNoYXJnZXNQYWlkQnkiOiJERUJUT1IiLCAiY2hhcmdlc0FjY291bnQiOnsgImJhbmtJZCI6IkJDWVBDWTJOIiwgImFjY291bnRJZCI6IjAzNTcxMTAwMzA1MSIgfSwgImFtb3VudCI6eyAiYW1vdW50IjoxMCwgImN1cnJlbmN5IjoiRVVSIiB9LCAiZGVzY3JpcHRpb24iOnsgImxpbmUxIjoiMSIsICJsaW5lMiI6IjIiLCAibGluZTMiOiIzIiwgImxpbmU0IjoiNCIgfSwgImVuZFRvRW5kSWQiOiIxNjAiLCAiZXhlY3V0aW9uRGF0ZSI6IjIyLzAyLzIwMTgiLCAidmFsdWVEYXRlIjoiMjIvMDIvMjAxOCIgfSBdIH0\",\n    \"signatures\": [\n        {\n            \"protected\": \"eyJhbGciOiJSUzI1NiJ9\",\n            \"signature\": \"F-_Hmx6xPw67ceYG8fYcacnLUynnLgEbyVZIE1iSTZFiwT2RHQsQ8bvOt6Z9QzX86ivM-cmPux2KTqVjvCJhd14_1E3myoCf9Rl1a_cKrg5vE0QcWK0Hx1cSbdeT5eTRE8LFFbCXQVpJcbleFGFIU4PcV2BFP_h_X95hCaEe6LGKg9S6rpbFKTTkCirU_fBHfqFeYWeOqN48OKvlrWBD5KRZjNgFtCuS5hRyEZEzfp6AfEeKuWyrXqJfezSH63hQuP9ROLf_SqE1oKJxsktfA-KxruoCjMo2QkjC8eQpebzpD6Cw_Q6fO354HTHMVCBcqEzR5Sh5ddsmhTQhxCyvNA\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/massPayments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"massPayments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateGroupPayment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"AUTH - 200\", function () {",
+							"pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"name": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "originUserId",
+						"value": "{{originUserId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "lang",
+						"value": "{{lang}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\": \"eyAiZmlsZW5hbWUiOiJzYWxhcnkxIiwgIm51bWJlck9mVHJhbnNhY3Rpb25zIjoyLCAidG90YWxBbW91bnQiOiIxMCIsICJ0eXBlIjoiUEFZUk9MTCIsICJleGVjdXRpb25EYXRlIjoiMjAvMDkvMjAyMCIsICJkZWJ0b3IiOnsgImJhbmtJZCI6IkJDWVBDWTJOIiwgImFjY291bnRJZCI6IjM1MTA5MjM0NTY3MiIgfSwgImNvbXBhbnlJbmZvIjp7ICJpZGVudGlmaWNhdGlvbiI6IkNZUDEyMyIsICJuYW1lIjoiVGVzdCBMdHMiIH0sICJncm91cFBheW1lbnRzIjpbIHsgImdyb3VwUGF5bWVudENyZWRpdG9yIjp7ICJiYW5rSWQiOiJIRUJBQ1kyTiIsICJhY2NvdW50SWQiOiJDWTAyMDAwNTM1MTA5MjM0NTY3NSIsICJiZW5lZmljaWFyeU5hbWUiOiJKb2huIERlZXIiLCAiYmVuZWZpY2lhcnlBZGRyZXNzIjp7ICJsaW5lMSI6IjEyIiwgImxpbmUyIjoiTWFrYXJpb3UiLCAibGluZTMiOiJOaWNvc2lhIiwgImxpbmU0IjoiQ3lwcnVzIiB9IH0sICJhbW91bnQiOjQsICJkZXNjcmlwdGlvbiI6eyAibGluZTEiOiJQYXlyb2xsIiwgImxpbmUyIjoiRmVicnVhcnkiLCAibGluZTMiOiIyMDE5IiwgImxpbmU0IjoiVGVzdCIgfSwgImVuZFRvRW5kSWQiOiJBQjEyNDM1NiIgfSwgeyAiZ3JvdXBQYXltZW50Q3JlZGl0b3IiOnsgImJhbmtJZCI6IkNSQkFHUkFBIiwgImFjY291bnRJZCI6IkdSMDIwMDA1NjU0MDkyMzQ1MTIzIiwgImJlbmVmaWNpYXJ5TmFtZSI6IkthdGUgQnJvd24iLCAiYmVuZWZpY2lhcnlBZGRyZXNzIjp7ICJsaW5lMSI6IjMiLCAibGluZTIiOiJFcm1vdSIsICJsaW5lMyI6IkF0aGVucyIsICJsaW5lNCI6IkdyZWVjZSIgfSB9LCAiYW1vdW50Ijo2LCAiZGVzY3JpcHRpb24iOnsgImxpbmUxIjoiUGF5cm9sbCIsICJsaW5lMiI6IkZlYnJ1YXJ5IiwgImxpbmUzIjoiMjAxOSIsICJsaW5lNCI6IlRlc3QiIH0sICJlbmRUb0VuZElkIjoiQUIxMjQzNTciIH0gXSB9\",\n    \"signatures\": [\n        {\n            \"protected\": \"eyJhbGciOiJSUzI1NiJ9\",\n            \"signature\": \"XVfhVTZMYLKTY86-2u-mAUGiLGu_FDfYjAA-ZPWQuqa7yYDoUH3iOpu6zv4AdlTLdka8SSq1aAoy59-1voue66P89Dm2yW6D0FZ6K1Y8ewuH0urO_ZZO5XfqniU6HIZKQlC-85gc2ndC7aKfZ5wo57jPf4DcnJO-UaoLgHMDBXThPFWsl890h0NMSdSwWLkUK8iQD8tbszxRkQsgwcDReefV1wvMWZZiJsM0QZF24wE6ouErSiYbFwUER4hMYEKO4iufJp4mXlhMH_v0w9W66k5y_ih0gXNXNI7Iv6cbJ8sfCOBkb_QPNHAzMCOrRaSkaBKe_CeoXZm-b50YT4iGNw\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/v1/payments/groupPayments",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"groupPayments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Initiate Payment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"CreatePayment - 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"PmtId\", jsonData.payment.paymentId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "lang",
+						"value": "{{lang}}"
+					},
+					{
+						"key": "loginTimeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "customerDevice",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "customerIp",
+						"value": "1.1.1.1"
+					},
+					{
+						"key": "customerSessionId",
+						"value": "{{$guid}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"payload\": \"eyAiZGVidG9yIjp7ICJiYW5rSWQiOiIiLCAiYWNjb3VudElkIjoiMzUxMDEyMzQ1NjcxIiB9LCAiY3JlZGl0b3IiOnsgImJhbmtJZCI6IkNJVElVUzMzIiwgImFjY291bnRJZCI6IjQ4MTkzMjIyMzI0MjMzIiB9LCAidHJhbnNhY3Rpb25BbW91bnQiOnsgImFtb3VudCI6MzAsICJjdXJyZW5jeSI6IkVVUiIgfSwgInBheW1lbnREZXRhaWxzIjoiU1dJRlQgVHJhbnNmZXIiIH0\",\n    \"signatures\": [\n        {\n            \"protected\": \"eyJhbGciOiJSUzI1NiJ9\",\n            \"signature\": \"s9vy53hGobNDeuQGyQI1J4-Kopo7AsVPMNYuyku9PLV2UXSAzkEfPQQPHYsAHe4ZnArv06XDp2Qsnqti5v88IWIDQe1AlVmNLEiVmkIBwXjsSWcRaNqVPWVas70SuO6ddrqH1Vz_UbvBJD02e49iDhuuCnsKZYBU7jvo4o-JvHyWXneXFElQvXKSCA-iddaivXdKWEuv7R2pkDr3xOJKJ4xS8Ugt5vKUVWMVQhDK6fOfzh50VeCSxC0v-XByMC4wLZcb4HbPtH9YEtP0MqF_AkqFRGD8v5OBBYr6pQdQ7oBRe1N6a9UkAhG0UDrfZFPoD6m1Gbdd9__RspWOU7fMDA\"\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "{{url}}/v1/payments/initiate",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"initiate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Execute Payment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode2}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{url}}/v1/payments/{{PmtId}}/execute",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"{{PmtId}}",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CancelPayment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/v1/payments/{{PmtId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"{{PmtId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPayment",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/payments/{{PmtId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"{{PmtId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPaymentStatus",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/payments/{{PmtId}}/status",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"payments",
+						"{{PmtId}}",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMassPaymentStatus-Filename",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "originUserId",
+						"value": "{{originUserId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "lang",
+						"value": "{{lang}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/massPayments?filename=Mass1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"massPayments"
+					],
+					"query": [
+						{
+							"key": "filename",
+							"value": "Mass1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMassPaymentStatus-AllParams",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "tppId",
+						"value": "{{tppId}}",
+						"disabled": true
+					},
+					{
+						"key": "originUserId",
+						"value": "{{originUserId}}"
+					},
+					{
+						"key": "journeyId",
+						"value": "{{$guid}}"
+					},
+					{
+						"key": "timeStamp",
+						"value": "{{$timestamp}}"
+					},
+					{
+						"key": "lang",
+						"value": "{{lang}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{oauthCode}}"
+					},
+					{
+						"key": "subscriptionId",
+						"value": "{{subscriptionId}}"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/v1/massPayments?filename=Mass1&endToEndId=160&transactionDate=22/08/2018",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"massPayments"
+					],
+					"query": [
+						{
+							"key": "filename",
+							"value": "Mass1"
+						},
+						{
+							"key": "endToEndId",
+							"value": "160"
+						},
+						{
+							"key": "transactionDate",
+							"value": "22/08/2018"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

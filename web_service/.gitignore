@@ -1,0 +1,17 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/ws_example
+ws_example.so
+ws_example.dylib
+ws_example.dll
+ws_example.a
+ws_example.lib
+ws_example-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
+dub.selections.json

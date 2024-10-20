@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Payment confirmation</title>
+   <link rel="stylesheet" href="/style_payment.css">
+</head>
+<body>
+<div class="bg">
+  
+  <div class="card">
+    
+    <span class="card__success"><i class="ion-checkmark"></i></span>
+    
+    <h1 class="card__msg">Payment Complete</h1>
+    <h2 class="card__submsg">Thank you for your transfer</h2>
+    
+    <div class="card__body">
+      
+      <img src="https://www.bankofcyprus.com/globalassets/bank-of-cyprus-logo-en.png" class="card__avatar">
+      <br>
+      <div class="card__recipient-info">
+        <p class="card__recipient">Bank Of Cyprus Customer</p>
+      </div>
+      
+      <h1 class="card__price"><span>&#8364;</span>{{{payment_amount}}}<span>.00</span></h1>
+      
+      <p class="card__method">Payment method</p>
+      <div class="card__payment">
+        <img src="https://seeklogo.com/images/V/VISA-logo-F3440F512B-seeklogo.com.png" class="card__credit-card">
+        <div class="card__card-details">
+          <p class="card__card-type">Credit / debit card</p>
+          <p class="card__card-number">Visa ending in **89</p>          
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="card__tags">
+        <span class="card__tag">completed</span>
+        <span class="card__tag">#123456789</span>        
+    </div>
+    
+  </div>
+  
+</div>
+<a href="http://10.1.1.49:8080/assistant" class="button">Return to AI assisstant</a>
+
+</body>

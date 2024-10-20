@@ -1,0 +1,11 @@
+6a00c348-f5b2-441c-add6-0017f9696b7aSubscription
+https://sandbox-apis.bankofcyprus.com/df-boc-org-sb/sb/psd2/oauth2/authorize?response_type=code&redirect_uri=http://10.1.1.49&scope=UserOAuth2Security&client_id=4dc07264f9bd6b360eedbe6fb0f4e1a0&subscriptionid=Subid000001-1729342428381
+
+Payment
+https://sandbox-apis.bankofcyprus.com/df-boc-org-sb/sb/psd2/oauth2/authorize?response_type=code&redirect_uri=http://10.1.1.49&scope=UserOAuth2Security&client_id=4dc07264f9bd6b360eedbe6fb0f4e1a0&paymentid=968cbdf8-0c08-43e7-bab3-53ce6ca5ef22
+
+Subscription
+http://10.1.1.49/?code=AANDtARNtjm9dN8soaTxnQKgj3O94JlCecZywp1KSw96kcJdLcazyRHNXp6pTewYALN6wQEHcw2eFu-0m5h-JnoZ98x08gd3fHm2TAoeJYasCw
+
+payment
+http://10.1.1.49/?code=AAOBC7lX1UC-3NqdeUJilEEjzOVn3u_gNLyMaZkKAuIslIP-gomSzOxKIpFcwwTELnY08H0YKtNXypjTW_vA3sjMEZ1SJoctKa-owxHZIaF0Tw

@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/req_tests
+req_tests.so
+req_tests.dylib
+req_tests.dll
+req_tests.a
+req_tests.lib
+req_tests-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
